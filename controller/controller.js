@@ -75,19 +75,24 @@ const userLogin = async (req, res) => {
 }
 
 
-const AlluserDetails = async(req, res) => {
-    let text;
+const AlluserDetails = async (req, res) => {
+    let text, values;
     try {
-        
-        text = `SELECT * FROM users`;
+        text = `SELECT id, username, email FROM users WHERE id = $1`;
+        values = [req.user.id];
 
-        const allUserData = await pool.query(text);
-        res.status(200).send({success: true, message: "Users Data", data: allUserData.rows});
+        const userData = await pool.query(text, values);
+
+        if (userData.rows.length === 0) {
+            return res.status(400).send({ success: false, message: "User not found" });
+        }
+        res.status(200).send({ success: true, message: "User Data", data: userData.rows[0] });
     } catch (error) {
-        (error, 'error here ::::');
+        console.log(error, 'error here ::::');
         res.status(400).send({ success: false, message: "Error while getting user details", error: error });
     }
 }
+
 
 const getUserById = async(req, res) => {
     const id = req.params.id;
