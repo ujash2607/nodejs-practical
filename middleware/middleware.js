@@ -8,7 +8,7 @@ const authorized = (req, res, next) => {
         return res.status(400).send({success: false, msg: "You need token"});
     }
 
-    jwt.verify(token, 'abcdefghijklmnopqrstuvwxyz', (error, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
         if (error) {
             return res.status(400).send("Invalid token");
         }
