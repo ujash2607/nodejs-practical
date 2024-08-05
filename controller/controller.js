@@ -20,19 +20,15 @@ const userSignup = async(req, res) => {
             res.status(400).send({success: false, message: "This user is already exists."});
         }
         else {
-            ("Inside else");
             const hashedPassword = await bcrypt.hash(password, 10);
-            (hashedPassword, 'hasing password :::');
 
             text = `INSERT INTO users (username, email, password) values ($1, $2, $3)`
             values = [username, email, hashedPassword];
 
-            (text, values, 'inside else :::::')
             const userDetails = await pool.query(text, values);
             res.status(200).send({success: true, message: "User registered successfully", data: userDetails.rows});
         }
     } catch (error) {
-        (error, 'error while sign up');
         res.status(400).send({ success: false, message: "error while sign up", error: error });
     }
 
@@ -49,27 +45,22 @@ const userLogin = async (req, res) => {
         const checkData = await pool.query(text, values);
 
         if (checkData.rows.length === 0) {
-            ("Invalid Cridentials");
             res.status(400).send({ success: false, message: "Invalid Cridentials" });
         }
         else {
             const user = checkData.rows[0];
-            (user, '<<<<<<<<<<<')
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
-                ("Invalid username and password, please try again");
                 res.status(400).send({ success: false, message: "Invalid username and password" });
             }
 
             else {
                 const token = jwt.sign({ id: user.id, email: user.email}, process.env.JWT_SECRET, { expiresIn: '1h' });
-                (token, 'token ::::');
                 res.status(200).send({ success: true, token: token });
             }
         }
     } catch (error) {
-        (error, 'error here ::::');
         res.status(400).send({ success: false, message: "Error while login", error: error });
     }
 }
