@@ -17,7 +17,7 @@ const userSignup = async(req, res) => {
         const existuser = await pool.query(text, values);
 
         if(existuser.rows.length > 0) {
-            res.status(400).send({success: false, message: "This user is already stored !!"});
+            res.status(400).send({success: false, message: "This user is already exists."});
         }
         else {
             ("Inside else");

@@ -6,6 +6,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: url('https://img.freepik.com/free-photo/flat-lay-desktop-concept-with-copy-space_23-2148226868.jpg') no-repeat center center fixed;
+    background-size: cover;
     height: 100vh;
     background-color: #d7c4eaf4;
 }
@@ -50,4 +52,8 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+img {
+    display: none;
 }
